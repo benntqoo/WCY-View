@@ -8,6 +8,7 @@
         <attr name="tickMarkCount" format="integer"/>
         <attr name="tickMarkColor" format="color"/>
         <attr name="percent" format="integer"/>
-
+        <attr name="mode" format="boolean"/>
+        <attr name="animation" format="boolean"/>
     </declare-styleable>
 </resources>

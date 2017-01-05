@@ -1,39 +1,44 @@
 package com.jrtou.myviewdemo.myviewdemo;
 
-import android.support.v7.app.AppCompatActivity;
+import android.content.Intent;
 import android.os.Bundle;
-import android.widget.SeekBar;
+import android.support.v7.app.AppCompatActivity;
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.ListView;
 
-import com.jrtou.myviewdemo.myviewdemo.view.DashboardView;
+import com.jrtou.myviewdemo.myviewdemo.Activity.DashboardActivity;
 
 public class MainActivity extends AppCompatActivity {
-    private DashboardView mD;
-    private SeekBar mSeekBar;
+
+    private ListView mListView;
+    private String[] mSTRArray;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        mD = (DashboardView) findViewById(R.id.dashboardView);
-        mSeekBar = (SeekBar) findViewById(R.id.sss);
-//        mPanelView.setText("已完成");
-        mSeekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+
+        mSTRArray = getResources().getStringArray(R.array.root);
+
+        mListView = (ListView) findViewById(R.id.listView);
+        mListView.setAdapter(new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, mSTRArray));
+
+        mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
-            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                mD.setPercent(progress);
-            }
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Intent intent = new Intent();
+                switch (position) {
+                    case 0:
+                        intent.setClass(MainActivity.this, DashboardActivity.class);
+                }
 
-            @Override
-            public void onStartTrackingTouch(SeekBar seekBar) {
-
-            }
-
-            @Override
-            public void onStopTrackingTouch(SeekBar seekBar) {
-
+                startActivity(intent);
             }
         });
 
     }
+
 
 }

@@ -23,7 +23,8 @@ public class DashboardView extends View {
     private int mPercent;                                           //設置百分比
     private float percent = 0f;                                     //目前百分比
     private float mFillPercent;                                     //
-    private Boolean mMode;                                          //指針或是數值顯示
+    private Boolean mMode;                                          //true:指針 false:數值顯示
+    private Boolean animation;                                      //動畫增長
     private static Paint mPaint = new Paint();
     //刻度線
     private int mTickMarksCount = 12;                               //數量
@@ -47,13 +48,6 @@ public class DashboardView extends View {
     private int progressColor;
     private static final int PROGRESS_STROKE_WIDTH = 15;
 
-
-    private String text = ""; //文字内容
-    private int textSize;//文字的大小
-    private int textColor;//设置文字颜色
-    private int arcColor; //小圆和指针颜色
-
-
     public DashboardView(Context context) {
         this(context, null);
     }
@@ -72,18 +66,22 @@ public class DashboardView extends View {
      */
     public DashboardView(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
+        TypedArray mTypeArray = context.obtainStyledAttributes(attrs, R.styleable.DashboardView, defStyleAttr, 0);
+        outsideColor = mTypeArray.getColor(R.styleable.DashboardView_outSideColor, Color.BLACK);
+        outsideStrokeWidth = mTypeArray.getDimensionPixelSize(R.styleable.DashboardView_outSideStokeWidth, PxUtils
+                .dpToPx
+                        (2, context));
+        progressColor = mTypeArray.getColor(R.styleable.DashboardView_progressColor, Color.BLUE);
+        mTickMarkWidth = mTypeArray.getDimensionPixelSize(R.styleable.DashboardView_tickMarkWidth, PxUtils.dpToPx(3,
+                context));
+        mTickMarkColor = mTypeArray.getColor(R.styleable.DashboardView_tickMarkColor, Color.BLACK);
+        mTickMarksCount = mTypeArray.getInteger(R.styleable.DashboardView_tickMarkCount, 12);
 
-        TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.DashboardView, defStyleAttr, 0);
-        outsideColor = a.getColor(R.styleable.DashboardView_outSideColor, Color.BLACK);
-        outsideStrokeWidth = a.getDimensionPixelSize(R.styleable.DashboardView_outSideStokeWidth, PxUtils.dpToPx
-                (2, context));
-        progressColor = a.getColor(R.styleable.DashboardView_progressColor, Color.BLUE);
-        mTickMarkWidth = a.getDimensionPixelSize(R.styleable.DashboardView_tickMarkWidth, PxUtils.dpToPx(3, context));
-        mTickMarkColor = a.getColor(R.styleable.DashboardView_tickMarkColor, Color.BLACK);
-        mTickMarksCount = a.getInteger(R.styleable.DashboardView_tickMarkCount, 12);
+        mPercent = mTypeArray.getInteger(R.styleable.DashboardView_percent, 0);
 
-        mPercent = a.getInteger(R.styleable.DashboardView_percent, 0);
-        a.recycle();
+        mMode = mTypeArray.getBoolean(R.styleable.DashboardView_mode, true);
+        animation = mTypeArray.getBoolean(R.styleable.DashboardView_animation, false);
+        mTypeArray.recycle();
     }
 
 
@@ -175,64 +173,50 @@ public class DashboardView extends View {
         canvas.drawArc(progressRectF, 45, 10, false, mPaint);
 
 
-        float secondRectWidth = outsideWidth - outsideStrokeWidth - 50 - (outsideStrokeWidth + 50);
-        float secondRectHeight = outsideHeight - outsideStrokeWidth - 50 - (outsideStrokeWidth + 50);
+        if (mMode) {
+            //內圓
+            mPaint.setColor(Color.BLACK);
+            mPaint.setStrokeWidth(3);
+            canvas.drawCircle(outsideWidth / 2, outsideHeight / 2, 20, mPaint);//內大圓
+            mPaint.setStrokeWidth(5);
+            canvas.drawCircle(outsideWidth / 2, outsideHeight / 2, 10, mPaint);//內小圓
 
-        //画粗弧突出部分左端
-//        canvas.drawArc(progressRectF, 115, 11, false, mPaint);
-//        canvas.drawArc(progressRectF, 144 + mFillPercent + empty, 10, false, mPaint);
-/*
-        mPaint.setColor(Color.BLUE);
-        //绘制小圆外圈
-        mPaint.setStrokeWidth(3);
-        canvas.drawCircle(outsideLineWidth / 2, outsideHeight / 2, 30, mPaint);
+            //指針
+            mPaint.setColor(Color.RED);
+            mPaint.setStrokeWidth(5);
+            //根據 percent 繪製指針
+            canvas.rotate((270 * percent - 270 / 2), outsideWidth / 2, outsideHeight / 2);
 
+            canvas.drawLine(outsideWidth / 2, (outsideHeight / 2 - outsideHeight / 2) + 50 / 2 + 2,
+                    outsideWidth / 2,
+                    outsideHeight / 2 - 10, mPaint);
 
-        //绘制小圆内圈
-        mPaint.setColor(Color.GREEN);
-        mPaint.setStrokeWidth(8);
-        int mMinCircleRadius = 15;
-        canvas.drawCircle(outsideLineWidth / 2, outsideHeight / 2, mMinCircleRadius, mPaint);
-
-        //绘制指针
-
-        mPaint.setColor(Color.RED);
-        mPaint.setStrokeWidth(4);
-
-
-        //按照百分比绘制刻度
-        canvas.rotate((250 * percent - 250 / 2), outsideLineWidth / 2, outsideHeight / 2);
-
-        canvas.drawLine(outsideLineWidth / 2, (outsideHeight / 2 - secondRectHeight / 2) + 50 / 2 + 2,
-                outsideLineWidth / 2,
-                outsideHeight / 2 - mMinCircleRadius, mPaint);
-
-        //将画布旋转回来
-        canvas.rotate(-(250 * percent - 250 / 2), outsideLineWidth / 2, outsideHeight / 2);
-
-        //绘制矩形
-        mPaint.setStyle(Paint.Style.FILL);
-        mPaint.setColor(Color.YELLOW);
-        int mRectWidth = 60;
-        int mRectHeight = 25;
-
-        //文字矩形的最底部坐标
-        float rectBottomY = outsideHeight / 2 + secondRectHeight / 3 + mRectHeight;
-        canvas.drawRect(outsideLineWidth / 2 - mRectWidth / 2, outsideHeight / 2 + secondRectHeight / 3,
-                outsideLineWidth /
-                        2 + mRectWidth / 2,
-                rectBottomY, mPaint);
+            //還原畫布
+            canvas.rotate(-(270 * percent - 270 / 2), outsideWidth / 2, outsideHeight / 2);
+        } else {
+            mPaint.setTextSize(PxUtils.spToPx(36, getContext()));
+            mPaint.setColor(Color.BLUE);
+            mPaint.setStyle(Paint.Style.FILL);
 
 
-        mPaint.setTextSize(24);
-        mPaint.setColor(Color.WHITE);
-        float txtLength = mPaint.measureText("Test");
-        canvas.drawText("Test", (outsideLineWidth - txtLength) / 2, rectBottomY + 40, mPaint);
-**/
+            int mNumber = (int) (percent * 100);
+            float textLength = mPaint.measureText(String.valueOf(mNumber));
+            float percentLength = mPaint.measureText("%");
+            canvas.drawText(String.valueOf(mNumber), (outsideWidth - textLength - percentLength) / 2, outsideHeight /
+                    2, mPaint);
+
+            mPaint.setTextSize(PxUtils.spToPx(16, getContext()));
+            canvas.drawText("%", (outsideWidth + textLength) / 2, outsideHeight / 2, mPaint);
+        }
     }
 
     public void setPercent(int percent) {
         mPercent = percent;
+        invalidate();
+    }
+
+    public void setMode(Boolean b){
+        mMode = b;
         invalidate();
     }
 }

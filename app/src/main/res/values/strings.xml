@@ -1,3 +1,8 @@
 <resources>
     <string name="app_name">MyViewDemo</string>
+
+    <string-array name="root">
+        <item>Dashboard</item>
+
+    </string-array>
 </resources>
