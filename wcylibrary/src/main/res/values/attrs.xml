@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="DashboardView">
+        <attr name="outSideColor" format="color"/>
+        <attr name="outSideStokeWidth" format="dimension"/>
+        <attr name="progressColor" format="color"/>
+        <attr name="tickMarkWidth" format="dimension"/>
+        <attr name="tickMarkCount" format="integer"/>
+        <attr name="tickMarkColor" format="color"/>
+        <attr name="percent" format="integer"/>
+        <attr name="mode" format="boolean"/>
+        <attr name="animation" format="boolean"/>
+    </declare-styleable>
+</resources>
