@@ -35,8 +35,8 @@ public class DashboardView extends View {
     private int mTickMarkColor;                                     //顏色
 
     // 外弧線 outside
-    private static final int DEFAULT_OUTSIDE_WIDTH = 200;           //View default width
-    private static final int DEFAULT_OUTSIDE_HEIGHT = 200;          //View default height
+    private static final int DEFAULT_MIN_VALUE = 100;               //View min value
+    private static final int DEFAULT_MAX_VALUE = 280;               //View max max
     private int outsideWidth;                                       //Width
     private int outsideHeight;                                      //Height
     private RectF outsideRectF = new RectF();                       //外弧線
@@ -69,8 +69,7 @@ public class DashboardView extends View {
         TypedArray mTypeArray = context.obtainStyledAttributes(attrs, R.styleable.DashboardView, defStyleAttr, 0);
         outsideColor = mTypeArray.getColor(R.styleable.DashboardView_outSideColor, Color.BLACK);
         outsideStrokeWidth = mTypeArray.getDimensionPixelSize(R.styleable.DashboardView_outSideStokeWidth, PxUtils
-                .dpToPx
-                        (2, context));
+                .dpToPx(2, context));
         progressColor = mTypeArray.getColor(R.styleable.DashboardView_progressColor, Color.BLUE);
         mTickMarkWidth = mTypeArray.getDimensionPixelSize(R.styleable.DashboardView_tickMarkWidth, PxUtils.dpToPx(3,
                 context));
@@ -87,31 +86,46 @@ public class DashboardView extends View {
 
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
+        int min = PxUtils.dpToPx(DEFAULT_MIN_VALUE, getContext());
+        int max = PxUtils.dpToPx(DEFAULT_MAX_VALUE, getContext());
+        int width = MeasureSpec.getSize(widthMeasureSpec);
+        int widthMode = MeasureSpec.getMode(widthMeasureSpec);
 
-        outsideWidth = PxUtils.dpToPx(DEFAULT_OUTSIDE_WIDTH, getContext());
-        outsideHeight = PxUtils.dpToPx(DEFAULT_OUTSIDE_HEIGHT, getContext());
+        int height = MeasureSpec.getSize(heightMeasureSpec);
+        int heightMode = MeasureSpec.getMode(heightMeasureSpec);
 
-        int measureMode = View.MeasureSpec.getMode(widthMeasureSpec);
-
-        if (measureMode == View.MeasureSpec.EXACTLY) {
-            outsideWidth = View.MeasureSpec.getSize(widthMeasureSpec);
-        } else if (measureMode == View.MeasureSpec.AT_MOST) {
-            outsideWidth = Math.min(outsideWidth, View.MeasureSpec.getSize(widthMeasureSpec));
+        if (widthMode == MeasureSpec.EXACTLY) {
+            if (min > width) {
+                outsideWidth = min;
+            } else if (max < width) {
+                outsideWidth = max;
+            } else {
+                outsideWidth = width;
+            }
+        } else if (widthMode == MeasureSpec.AT_MOST) {
+            outsideWidth = min;
         }
 
-        measureMode = View.MeasureSpec.getMode(heightMeasureSpec);
-
-        if (measureMode == View.MeasureSpec.EXACTLY) {
-            outsideHeight = View.MeasureSpec.getSize(heightMeasureSpec);
-        } else if (measureMode == View.MeasureSpec.AT_MOST) {
-            outsideHeight = Math.min(outsideHeight, View.MeasureSpec.getSize(heightMeasureSpec));
+        if (heightMode == MeasureSpec.EXACTLY) {
+            if (min > height) {
+                outsideHeight = min;
+            } else if (max < height) {
+                outsideHeight = max;
+            } else {
+                outsideHeight = height;
+            }
+        } else if (heightMode == MeasureSpec.AT_MOST) {
+            outsideHeight = min;
         }
+
+
 
         mTickMarkX = outsideWidth / 2;
         mTickMArkY = outsideStrokeWidth - PxUtils.dpToPx(1, getContext());
         setMeasuredDimension(outsideWidth, outsideHeight);
 
     }
+
 
     @Override
     protected void onDraw(Canvas canvas) {
