@@ -28,13 +28,14 @@
         android:layout_alignParentStart="true"
         android:layout_marginBottom="54dp"/>
 
-    <com.jrtou.myviewdemo.wcylibrary.View.DashboardView
+    <com.jrtou.myviewdemo.wcylibrary.View.Dashboard
         android:id="@+id/dashboardView"
         android:layout_width="200dp"
         android:layout_height="200dp"
         android:layout_alignParentTop="true"
         android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"/>
+        android:layout_alignParentStart="true"
+        wcy:percent="50"/>
 
 
 </RelativeLayout>

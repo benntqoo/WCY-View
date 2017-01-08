@@ -8,6 +8,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
+import com.jrtou.myviewdemo.myviewdemo.Activity.CircleDashBoardActivity;
 import com.jrtou.myviewdemo.myviewdemo.Activity.DashboardActivity;
 
 public class MainActivity extends AppCompatActivity {
@@ -32,12 +33,15 @@ public class MainActivity extends AppCompatActivity {
                 switch (position) {
                     case 0:
                         intent.setClass(MainActivity.this, DashboardActivity.class);
+                        break;
+                    case 1:
+                        intent.setClass(MainActivity.this, CircleDashBoardActivity.class);
+                        break;
                 }
 
                 startActivity(intent);
             }
         });
-
     }
 
 

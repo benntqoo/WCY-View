@@ -3,6 +3,6 @@
 
     <string-array name="root">
         <item>Dashboard</item>
-
+        <item>CircleDashBoard</item>
     </string-array>
 </resources>

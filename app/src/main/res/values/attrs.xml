@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <declare-styleable name="DashboardView">
+    <declare-styleable name="Dashboard">
         <attr name="outSideColor" format="color"/>
         <attr name="outSideStokeWidth" format="dimension"/>
         <attr name="progressColor" format="color"/>

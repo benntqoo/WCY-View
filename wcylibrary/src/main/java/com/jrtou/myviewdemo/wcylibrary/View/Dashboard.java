@@ -18,7 +18,7 @@ import com.jrtou.myviewdemo.wcylibrary.Tool.PxUtils;
  * 所有長度計算一律使用DP轉換PX
  */
 
-public class DashboardView extends View {
+public class Dashboard extends View {
     private static final String TAG = "DashboardView";
     private int mPercent;                                           //設置百分比
     private float percent = 0f;                                     //目前百分比
@@ -48,11 +48,11 @@ public class DashboardView extends View {
     private int progressColor;
     private static final int PROGRESS_STROKE_WIDTH = 15;
 
-    public DashboardView(Context context) {
+    public Dashboard(Context context) {
         this(context, null);
     }
 
-    public DashboardView(Context context, AttributeSet attrs) {
+    public Dashboard(Context context, AttributeSet attrs) {
         this(context, attrs, 0);
     }
 
@@ -64,22 +64,22 @@ public class DashboardView extends View {
      * @param attrs        attrs
      * @param defStyleAttr ??
      */
-    public DashboardView(Context context, AttributeSet attrs, int defStyleAttr) {
+    public Dashboard(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
-        TypedArray mTypeArray = context.obtainStyledAttributes(attrs, R.styleable.DashboardView, defStyleAttr, 0);
-        outsideColor = mTypeArray.getColor(R.styleable.DashboardView_outSideColor, Color.BLACK);
-        outsideStrokeWidth = mTypeArray.getDimensionPixelSize(R.styleable.DashboardView_outSideStokeWidth, PxUtils
+        TypedArray mTypeArray = context.obtainStyledAttributes(attrs, R.styleable.Dashboard, defStyleAttr, 0);
+        outsideColor = mTypeArray.getColor(R.styleable.Dashboard_outSideColor, Color.BLACK);
+        outsideStrokeWidth = mTypeArray.getDimensionPixelSize(R.styleable.Dashboard_outSideStokeWidth, PxUtils
                 .dpToPx(2, context));
-        progressColor = mTypeArray.getColor(R.styleable.DashboardView_progressColor, Color.BLUE);
-        mTickMarkWidth = mTypeArray.getDimensionPixelSize(R.styleable.DashboardView_tickMarkWidth, PxUtils.dpToPx(3,
+        progressColor = mTypeArray.getColor(R.styleable.Dashboard_progressColor, Color.BLUE);
+        mTickMarkWidth = mTypeArray.getDimensionPixelSize(R.styleable.Dashboard_tickMarkWidth, PxUtils.dpToPx(3,
                 context));
-        mTickMarkColor = mTypeArray.getColor(R.styleable.DashboardView_tickMarkColor, Color.BLACK);
-        mTickMarksCount = mTypeArray.getInteger(R.styleable.DashboardView_tickMarkCount, 12);
+        mTickMarkColor = mTypeArray.getColor(R.styleable.Dashboard_tickMarkColor, Color.BLACK);
+        mTickMarksCount = mTypeArray.getInteger(R.styleable.Dashboard_tickMarkCount, 12);
 
-        mPercent = mTypeArray.getInteger(R.styleable.DashboardView_percent, 0);
+        mPercent = mTypeArray.getInteger(R.styleable.Dashboard_percent, 0);
 
-        mMode = mTypeArray.getBoolean(R.styleable.DashboardView_mode, true);
-        animation = mTypeArray.getBoolean(R.styleable.DashboardView_animation, false);
+        mMode = mTypeArray.getBoolean(R.styleable.Dashboard_mode, true);
+        animation = mTypeArray.getBoolean(R.styleable.Dashboard_animation, false);
         mTypeArray.recycle();
     }
 

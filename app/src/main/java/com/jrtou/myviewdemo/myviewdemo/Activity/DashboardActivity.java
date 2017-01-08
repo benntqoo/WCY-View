@@ -7,7 +7,7 @@ import android.widget.SeekBar;
 import android.widget.Switch;
 
 import com.jrtou.myviewdemo.myviewdemo.R;
-import com.jrtou.myviewdemo.myviewdemo.view.DashboardView;
+import com.jrtou.myviewdemo.wcylibrary.View.Dashboard;
 
 public class DashboardActivity extends AppCompatActivity {
 
@@ -16,7 +16,7 @@ public class DashboardActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_dashboard);
 
-        final DashboardView mD = (DashboardView) findViewById(R.id.dashboardView);
+        final Dashboard mD = (Dashboard) findViewById(R.id.dashboardView);
         SeekBar mSeekBar = (SeekBar) findViewById(R.id.sss);
         mSeekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override

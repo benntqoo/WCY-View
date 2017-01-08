@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <declare-styleable name="DashboardView">
+    <declare-styleable name="Dashboard">
         <attr name="outSideColor" format="color"/>
         <attr name="outSideStokeWidth" format="dimension"/>
         <attr name="progressColor" format="color"/>
@@ -10,5 +10,12 @@
         <attr name="percent" format="integer"/>
         <attr name="mode" format="boolean"/>
         <attr name="animation" format="boolean"/>
+    </declare-styleable>
+
+
+    <declare-styleable name="CircleDashboard">
+        <attr name="circleColor" format="color"/>
+        <attr name="percentColor" format="color"/>
+        <attr name="percentWidth" format="dimension"/>
     </declare-styleable>
 </resources>
