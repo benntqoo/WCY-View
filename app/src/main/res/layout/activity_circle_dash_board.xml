@@ -9,6 +9,54 @@
 
 
     <com.jrtou.myviewdemo.wcylibrary.View.CircleDashboard
-        android:layout_width="300dp"
-        android:layout_height="300dp"/>
+        android:id="@+id/circle_dashboard"
+        android:layout_width="200dp"
+        android:layout_height="200dp"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="29dp"/>
+
+
+    <Button
+        android:id="@+id/circle_btn_random"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/circle_dashboard"
+        android:layout_marginLeft="17dp"
+        android:layout_marginStart="17dp"
+        android:layout_marginTop="42dp"
+        android:text="隨機數值"/>
+
+    <Button
+        android:id="@+id/circle_btn_input"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/circle_btn_random"
+        android:layout_alignStart="@+id/circle_btn_random"
+        android:layout_below="@+id/circle_btn_random"
+        android:layout_marginTop="11dp"
+        android:text="手動輸入"/>
+
+    <EditText
+        android:id="@+id/circle_ed_number"
+        android:layout_width="100dp"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/circle_btn_input"
+        android:layout_alignBottom="@+id/circle_btn_input"
+        android:layout_centerHorizontal="true"
+        android:inputType="number"/>
+
+    <CheckBox
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="開啟動畫"
+        android:layout_alignBaseline="@+id/circle_btn_random"
+        android:layout_alignBottom="@+id/circle_btn_random"
+        android:layout_toRightOf="@+id/circle_btn_random"
+        android:layout_toEndOf="@+id/circle_btn_random"
+        android:layout_marginLeft="19dp"
+        android:layout_marginStart="19dp"
+        android:id="@+id/circlr_checkBox"/>
 </RelativeLayout>

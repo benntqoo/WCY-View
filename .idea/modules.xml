@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/MyViewDemo.iml" filepath="$PROJECT_DIR$/MyViewDemo.iml" />
+      <module fileurl="file://$PROJECT_DIR$/WCY-ViewDemo.iml" filepath="$PROJECT_DIR$/WCY-ViewDemo.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
       <module fileurl="file://$PROJECT_DIR$/wcylibrary/wcylibrary.iml" filepath="$PROJECT_DIR$/wcylibrary/wcylibrary.iml" />
     </modules>
