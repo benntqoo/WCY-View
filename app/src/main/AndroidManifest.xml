@@ -19,6 +19,8 @@
         </activity>
         <activity android:name=".Activity.CircleDashBoardActivity">
         </activity>
+        <activity android:name=".Activity.WaterWaveDashBoardActivity">
+        </activity>
     </application>
 
 </manifest>

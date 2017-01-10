@@ -16,6 +16,6 @@
     <declare-styleable name="CircleDashboard">
         <attr name="circleColor" format="color"/>
         <attr name="percentColor" format="color"/>
-        <attr name="percentWidth" format="dimension"/>
+        <attr name="percentAnimation" format="boolean"/>
     </declare-styleable>
 </resources>

@@ -7,6 +7,7 @@ import android.graphics.Paint;
 import android.graphics.RectF;
 import android.util.AttributeSet;
 import android.view.View;
+import android.widget.Toast;
 
 import com.jrtou.myviewdemo.wcylibrary.R;
 import com.jrtou.myviewdemo.wcylibrary.Tool.PxUtils;
@@ -32,13 +33,14 @@ public class CircleDashboard extends View {
     private int radius;
     private int circleColor;
     private int percentColor;
+    private static final int DEFAULT_PERCENT_WIDTH = 10;
     private int percentWidth;
-    private static final int a = 12;
-    private int b;
     private int percent;
 
+    private boolean animationMode;
+
     private static final int textSize = 16;
-    private float textSizeReault;
+    private float textSizeResult;
 
     public CircleDashboard(Context context) {
         this(context, null);
@@ -59,8 +61,7 @@ public class CircleDashboard extends View {
         percentColor = mTypeArray.getColor(R.styleable.CircleDashboard_percentColor, getResources().getColor(R.color
                 .indigo300));
 
-        percentWidth = mTypeArray.getDimensionPixelSize(R.styleable.CircleDashboard_percentWidth, PxUtils.dpToPx(12,
-                context));
+        animationMode = mTypeArray.getBoolean(R.styleable.CircleDashboard_percentAnimation, false);
         mTypeArray.recycle();
     }
 
@@ -103,8 +104,9 @@ public class CircleDashboard extends View {
         }
 
         radius = viewWidth > viewHeight ? viewHeight : viewWidth;
-        textSizeReault = PxUtils.spToPx(textSize, getContext()) * radius / PxUtils.dpToPx(DEFAULT_VALUE, getContext());
-        b = PxUtils.dpToPx(a, getContext()) * radius / PxUtils.dpToPx(DEFAULT_VALUE, getContext());
+        textSizeResult = PxUtils.spToPx(textSize, getContext()) * radius / PxUtils.dpToPx(DEFAULT_VALUE, getContext());
+        percentWidth = PxUtils.dpToPx(DEFAULT_PERCENT_WIDTH, getContext()) * radius / PxUtils.dpToPx(DEFAULT_VALUE,
+                getContext());
         setMeasuredDimension(viewWidth, viewHeight);
     }
 
@@ -120,26 +122,67 @@ public class CircleDashboard extends View {
         //percent
         mPaint.setColor(percentColor);
         mRectF.set(0, 0, radius, radius);
-        canvas.drawArc(mRectF, 270, 50, true, mPaint);
+        float drawPercent = (float) (percent * 3.6);
+        canvas.drawArc(mRectF, 270, drawPercent, true, mPaint);
 
         //inside circle
         mPaint.setColor(circleColor);
-        canvas.drawCircle(radius / 2, radius / 2, radius / 2 - b, mPaint);
-        //TODO 文字等比例放大未完成
+        canvas.drawCircle(radius / 2, radius / 2, radius / 2 - percentWidth, mPaint);
+
         //Text
         mPaint.setColor(percentColor);
-        mPaint.setTextSize(textSizeReault);
-        float textLength = mPaint.measureText("2");
-        canvas.drawText("20", radius / 2-textLength, radius / 2, mPaint);
+        mPaint.setTextSize(textSizeResult);
+        float textLength = mPaint.measureText(String.valueOf(percent));
+        canvas.drawText(String.valueOf(percent), radius / 2 - textLength, radius / 2, mPaint);
 
-        mPaint.setTextSize(textSizeReault - PxUtils.spToPx(20,getContext()));
-        mPaint.setFakeBoldText(true);
+        double subTextSize = textSizeResult * 0.6;
+        mPaint.setTextSize((float) subTextSize);
+        mPaint.setFakeBoldText(false);
 
-        canvas.drawText("%", radius / 2  +textLength, radius / 2, mPaint);
+        float subTextLength = mPaint.measureText("%");
+        canvas.drawText("%", radius / 2 + subTextLength, radius / 2, mPaint);
     }
 
-    private void setPercent(int percent) {
-        this.percent = percent;
-        invalidate();
+
+    public boolean getAnimationMode() {
+        return animationMode;
+    }
+
+    public void setAnimationMode(Boolean b) {
+        animationMode = b;
+    }
+
+
+    public void setPercent(int percent) {
+        if (percent > 100) {
+            Toast.makeText(getContext(), "Percent has error value", Toast.LENGTH_SHORT).show();
+        } else {
+            this.percent = percent;
+
+            if (animationMode) {
+                animationInvalidate(percent);
+            } else {
+                invalidate();
+            }
+
+        }
+    }
+
+    private void animationInvalidate(int p) {
+        final int drawPercent = p;
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                for (int i = 0; i <= drawPercent; i++) {
+                    try {
+                        Thread.sleep(15);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                    percent = i;
+                    postInvalidate();
+                }
+            }
+        }).start();
     }
 }
