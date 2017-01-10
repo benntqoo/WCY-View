@@ -10,6 +10,7 @@ import android.widget.ListView;
 
 import com.jrtou.myviewdemo.myviewdemo.Activity.CircleDashBoardActivity;
 import com.jrtou.myviewdemo.myviewdemo.Activity.DashboardActivity;
+import com.jrtou.myviewdemo.myviewdemo.Activity.WaterWaveDashBoardActivity;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -36,6 +37,9 @@ public class MainActivity extends AppCompatActivity {
                         break;
                     case 1:
                         intent.setClass(MainActivity.this, CircleDashBoardActivity.class);
+                        break;
+                    case 2:
+                        intent.setClass(MainActivity.this, WaterWaveDashBoardActivity.class);
                         break;
                 }
 
